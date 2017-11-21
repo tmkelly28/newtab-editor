@@ -1,0 +1,13 @@
+{
+  "manifest_version": 2,
+  "name": "NewTab Editor",
+  "description": "This replaces chrome's default new tab with a js editor",
+  "version": "1.0",
+  "browser_action": {
+    "default_icon": "icon.png"
+  },
+  "chrome_url_overrides": {
+    "newtab": "index.html"
+  },
+  "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'"
+}
