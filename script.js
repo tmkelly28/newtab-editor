@@ -9,16 +9,32 @@ editor.getSession().setMode('ace/mode/javascript')
 editor.setKeyboardHandler('ace/keyboard/vim')
 editor.setShowPrintMargin(false)
 
+const stringify = thing => {
+  const type = typeof thing
+  switch (type) {
+    case 'undefined':
+      return 'undefined'
+    case 'object':
+      return !thing
+        ? 'null'
+        : Array.isArray(thing)
+          ? `[${thing.map(stringify).join(',')}]`
+          : JSON.stringify(thing)
+    default:
+      return thing.toString()
+  }
+}
+
 let logs = []
 const originalConsoleLog = window.console.log.bind(console)
 window.console.log = (...args) => {
-  logs.push(...args)
+  logs.push(...(args.map(stringify)))
   originalConsoleLog(...args)
 }
 
 const handleResult = (result) => {
   originalConsoleLog(result)
-  logs.push(result)
+  logs.push(stringify(result))
   output.innerHTML = logs.join(br)
   originalConsoleLog(logs)
   logs = []
