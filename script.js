@@ -3,7 +3,6 @@ const editor = ace.edit('editor')
 const output = document.getElementById('output')
 const DARK_THEME = 'monokai'
 const LIGHT_THEME = 'chrome'
-const br = '<br />'
 editor.setTheme(`ace/theme/${DARK_THEME}`)
 editor.getSession().setMode('ace/mode/javascript')
 editor.setKeyboardHandler('ace/keyboard/vim')
@@ -25,26 +24,33 @@ const stringify = thing => {
   }
 }
 
-let logs = []
 const originalConsoleLog = window.console.log.bind(console)
-window.console.log = (...args) => {
-  logs.push(...(args.map(stringify)))
+const newConsoleLog = (...args) => {
   originalConsoleLog(...args)
+  args.map(stringify).forEach(arg => {
+    output.appendChild(document.createTextNode(arg))
+    output.appendChild(document.createElement('br'))
+  })
 }
 
+window.console.log = newConsoleLog
+
 const handleResult = (result) => {
-  originalConsoleLog(result)
-  logs.push(stringify(result))
-  output.innerHTML = logs.join(br)
-  originalConsoleLog(logs)
-  logs = []
+  if (result instanceof Promise) {
+    return result.then(handleResult, handleResult)
+  }
+  newConsoleLog('Editor returns: ' + stringify(result))
 }
 
 editor.commands.addCommand({
   name: 'exec',
   bindKey: {win: 'Ctrl-E', mac: 'Command-E'},
   exec (editor) {
-    handleResult(eval(editor.getValue()))
+    try {
+      handleResult(eval(editor.getValue()))
+    } catch (err) {
+      handleResult(err.message)
+    }
   },
   readOnly: true // false if this command should not apply in readOnly mode
 })
@@ -57,6 +63,15 @@ editor.commands.addCommand({
     theme === DARK_THEME
       ? editor.setTheme(`ace/theme/${LIGHT_THEME}`)
       : editor.setTheme(`ace/theme/${DARK_THEME}`)
+  },
+  readOnly: true // false if this command should not apply in readOnly mode
+})
+
+editor.commands.addCommand({
+  name: 'clear',
+  bindKey: {win: 'Ctrl-P', mac: 'Command-P'},
+  exec (editor) {
+    output.innerHTML = ''
   },
   readOnly: true // false if this command should not apply in readOnly mode
 })
