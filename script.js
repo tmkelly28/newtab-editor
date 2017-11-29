@@ -47,6 +47,7 @@ editor.commands.addCommand({
   bindKey: {win: 'Ctrl-E', mac: 'Command-E'},
   exec (editor) {
     try {
+      output.innerHTML = ''
       handleResult(eval(editor.getValue()))
     } catch (err) {
       handleResult(err.message)
@@ -63,15 +64,6 @@ editor.commands.addCommand({
     theme === DARK_THEME
       ? editor.setTheme(`ace/theme/${LIGHT_THEME}`)
       : editor.setTheme(`ace/theme/${DARK_THEME}`)
-  },
-  readOnly: true // false if this command should not apply in readOnly mode
-})
-
-editor.commands.addCommand({
-  name: 'clear',
-  bindKey: {win: 'Ctrl-P', mac: 'Command-P'},
-  exec (editor) {
-    output.innerHTML = ''
   },
   readOnly: true // false if this command should not apply in readOnly mode
 })
