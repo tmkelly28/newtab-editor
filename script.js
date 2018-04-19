@@ -1,6 +1,9 @@
 const {ace} = window
 const editor = ace.edit('editor')
 const output = document.getElementById('output')
+const outputContainer = document.getElementById('output-container')
+const bgDark = 'rgb(47, 49, 42)'
+const bgLight = 'rgb(255, 255, 255)'
 const DARK_THEME = 'monokai'
 const LIGHT_THEME = 'chrome'
 editor.setTheme(`ace/theme/${DARK_THEME}`)
@@ -44,7 +47,7 @@ const handleResult = (result) => {
 
 editor.commands.addCommand({
   name: 'exec',
-  bindKey: {win: 'Ctrl-E', mac: 'Command-E'},
+  bindKey: {win: 'Ctrl-Enter', mac: 'Command-Enter'},
   exec (editor) {
     try {
       output.innerHTML = ''
@@ -61,9 +64,15 @@ editor.commands.addCommand({
   bindKey: {win: 'Ctrl-M', mac: 'Command-M'},
   exec (editor) {
     const [,, theme] = editor.getTheme().split('/')
-    theme === DARK_THEME
-      ? editor.setTheme(`ace/theme/${LIGHT_THEME}`)
-      : editor.setTheme(`ace/theme/${DARK_THEME}`)
+    if (theme === DARK_THEME) {
+      editor.setTheme(`ace/theme/${LIGHT_THEME}`)
+      outputContainer.style.backgroundColor = bgLight
+      outputContainer.style.color = 'black'
+    } else {
+      editor.setTheme(`ace/theme/${DARK_THEME}`)
+      outputContainer.style.backgroundColor = bgDark
+      outputContainer.style.color = 'white'
+    }
   },
   readOnly: true // false if this command should not apply in readOnly mode
 })
