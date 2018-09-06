@@ -2,6 +2,8 @@ const {ace} = window
 const editor = ace.edit('editor')
 const output = document.getElementById('output')
 const outputContainer = document.getElementById('output-container')
+const clock = document.getElementById('clock')
+const clockDt = document.getElementById('clock-dt')
 const bgDark = 'rgb(47, 49, 42)'
 const bgLight = 'rgb(255, 255, 255)'
 const DARK_THEME = 'monokai'
@@ -10,6 +12,8 @@ editor.setTheme(`ace/theme/${DARK_THEME}`)
 editor.getSession().setMode('ace/mode/javascript')
 editor.setKeyboardHandler('ace/keyboard/vim')
 editor.setShowPrintMargin(false)
+
+// editor
 
 const stringify = thing => {
   const type = typeof thing
@@ -42,7 +46,7 @@ const handleResult = (result) => {
   if (result instanceof Promise) {
     return result.then(handleResult, handleResult)
   }
-  newConsoleLog('Editor returns: ' + stringify(result))
+  newConsoleLog('=> ' + stringify(result))
 }
 
 editor.commands.addCommand({
@@ -68,11 +72,28 @@ editor.commands.addCommand({
       editor.setTheme(`ace/theme/${LIGHT_THEME}`)
       outputContainer.style.backgroundColor = bgLight
       outputContainer.style.color = 'black'
+      clock.style.backgroundColor = bgLight
     } else {
       editor.setTheme(`ace/theme/${DARK_THEME}`)
       outputContainer.style.backgroundColor = bgDark
       outputContainer.style.color = 'white'
+      clock.style.backgroundColor = bgDark
     }
   },
   readOnly: true // false if this command should not apply in readOnly mode
 })
+
+// clock
+
+const pad = (t) => `${t}`.length < 2 ? `0${t}` : t
+const setDate = () => {
+  const d = new Date()
+  const hour = pad(d.getHours())
+  const min = pad(d.getMinutes())
+  const sec = pad(d.getSeconds())
+
+  clockDt.innerText = `${hour}:${min}:${sec}`
+}
+
+setDate()
+setInterval(setDate, 1000)
