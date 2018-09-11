@@ -1,5 +1,6 @@
 const {ace} = window
 const editor = ace.edit('editor')
+const editorDomNode = document.getElementById('editor')
 const output = document.getElementById('output')
 const outputContainer = document.getElementById('output-container')
 const clock = document.getElementById('clock')
@@ -95,5 +96,22 @@ const setDate = () => {
   clockDt.innerText = `${hour}:${min}:${sec}`
 }
 
-setDate()
-setInterval(setDate, 1000)
+// main
+const main = () => {
+  setDate()
+  setInterval(setDate, 1000)
+  const domNodes = [editorDomNode, outputContainer, clock]
+  domNodes.forEach(node => {
+    const originalOpacity = node.style.opacity
+
+    node.addEventListener('mouseenter', () => {
+      node.style.opacity = '0.9'
+    })
+
+    node.addEventListener('mouseleave', () => {
+      node.style.opacity = originalOpacity
+    })
+  })
+}
+
+main()
