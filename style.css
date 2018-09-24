@@ -59,6 +59,15 @@ body > div {
   border-top: 3px solid gray;
   padding: 1em;
   color: silver;
+  font-family: 'Permanent Marker', monospace;
+}
+
+#shortcuts h1 {
+  color: teal;
+}
+
+#shortcuts p {
+  font-family: monospace;
 }
 
 @media only screen and (max-width: 768px) {
