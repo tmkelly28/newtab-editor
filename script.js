@@ -108,12 +108,32 @@ const SHORTCUTS = [
   new SC(
     'Slack: Alt + Shift + Up/Down',
     'Move to next unread channel'
+  ),
+  new SC(
+    'vim-surround: cs<arg>',
+    'Change Surround to be the arg'
+  ),
+  new SC(
+    'vim-surround: ds<arg>',
+    'Delete Surrounding arg '
+  ),
+  new SC(
+    'vim-surround: S<arg>',
+    'In visual mode, Surround selection with the arg'
+  ),
+  new SC(
+    'vim-surround: yss<arg>',
+    'Surround entire line with arg'
+  ),
+  new SC(
+    'vim-surround: ysiw<arg>',
+    'Surround Inner Word with arg'
   )
 ]
 const setRandomShortcut = () => {
   const title = document.getElementById('shortcut:title')
   const content = document.getElementById('shortcut:content')
-  const random = SHORTCUTS[Math.floor(Math.random() * (SHORTCUTS.length - 1))]
+  const random = SHORTCUTS[Math.floor(Math.random() * SHORTCUTS.length)]
   title.innerText = random.title
   content.innerText = random.content
 }
