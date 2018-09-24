@@ -5,6 +5,7 @@ const output = document.getElementById('output')
 const outputContainer = document.getElementById('output-container')
 const clock = document.getElementById('clock')
 const clockDt = document.getElementById('clock-dt')
+const shortcuts = document.getElementById('shortcuts')
 const bgDark = 'rgb(47, 49, 42)'
 const bgLight = 'rgb(255, 255, 255)'
 const DARK_THEME = 'monokai'
@@ -96,11 +97,33 @@ const setDate = () => {
   clockDt.innerText = `${hour}:${min}:${sec}`
 }
 
+// shoftcuts
+class SC {
+  constructor (title, content) {
+    this.title = title
+    this.content = content
+  }
+}
+const SHORTCUTS = [
+  new SC(
+    'Slack: Alt + Shift + Up/Down',
+    'Move to next unread channel'
+  )
+]
+const setRandomShortcut = () => {
+  const title = document.getElementById('shortcut:title')
+  const content = document.getElementById('shortcut:content')
+  const random = SHORTCUTS[Math.floor(Math.random() * (SHORTCUTS.length - 1))]
+  title.innerText = random.title
+  content.innerText = random.content
+}
+
 // main
 const main = () => {
   setDate()
+  setRandomShortcut()
   setInterval(setDate, 1000)
-  const domNodes = [editorDomNode, outputContainer, clock]
+  const domNodes = [editorDomNode, outputContainer, clock, shortcuts]
   domNodes.forEach(node => {
     const originalOpacity = node.style.opacity
 

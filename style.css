@@ -52,11 +52,20 @@ body > div {
   opacity: 0.3;
 }
 
+#shortcuts {
+  opacity: 0.3;
+  background-color: rgb(47, 49, 42);
+  border-left: 3px solid gray;
+  border-top: 3px solid gray;
+  padding: 1em;
+  color: silver;
+}
+
 @media only screen and (max-width: 768px) {
   body {
     flex-direction: column;
   }
-  #clock {
+  #clock, #shortcuts {
     border-left: none;
     border-top: 3px solid gray;
   }
